@@ -93,38 +93,38 @@ notebook.grid(column=0, row=0, sticky='NSEW')
 # Create Frames for tabs
 tab1 = ttk.Frame(notebook)
 tab2 = ttk.Frame(notebook)
-notebook.add(tab1, text="Password Manager")
-notebook.add(tab2, text="Stored Data")
+notebook.add(tab1, text="Manager")
+notebook.add(tab2, text="Vault")
 
-canvas = Canvas(width=320, height=200, highlightthickness=0)
+canvas = Canvas(tab1, width=320, height=200, highlightthickness=0)
 logo = PhotoImage(file="logo_resized.png")
 canvas.create_image(160, 100, image=logo)
 canvas.grid(column=0, row=0, columnspan=3)
 
-website_label = Label(text="Website:", font=("Stencil Std", 12, "normal"))
+website_label = Label(tab1, text="Website:", font=("Stencil Std", 12, "normal"))
 website_label.grid(column=0, row=1, sticky="W")
-website_entry = Entry(width=35)
+website_entry = Entry(tab1, width=35)
 website_entry.grid(column=1, row=1, sticky="EW")
 website_entry.focus()
 
-user_label = Label(text="Email/Username:", font=("Stencil Std", 12, "normal"))
+user_label = Label(tab1, text="Email/Username:", font=("Stencil Std", 12, "normal"))
 user_label.grid(column=0, row=2, sticky="W")
-user_entry = Entry(width=35)
+user_entry = Entry(tab1, width=35)
 user_entry.grid(column=1, row=2, columnspan=2, sticky="EW")
 user_entry.insert(0, "edib.hafizovic@gmail.com") # use END to insert text at the end of an existing string value
 
-pw_label = Label(text="Password:", font=("Stencil Std", 12, "normal"))
+pw_label = Label(tab1, text="Password:", font=("Stencil Std", 12, "normal"))
 pw_label.grid(column=0, row=3, sticky="W")
-pw_entry = Entry(width=17)
+pw_entry = Entry(tab1, width=17)
 pw_entry.grid(column=1, row=3, sticky="EW")
 
-generate_pw = Button(text="Generate Password", command=generate_password)
+generate_pw = Button(tab1, text="Generate Password", command=generate_password)
 generate_pw.grid(column=2, row=3, sticky="EW")
 
-add_btn = Button(text="Add", command=save)
+add_btn = Button(tab1, text="Add", command=save)
 add_btn.grid(column=1,row=4, columnspan=2, sticky="EW")
 
-search_btn = Button(text="Search", command=find_password)
+search_btn = Button(tab1, text="Search", command=find_password)
 search_btn.grid(column=2, row=1, sticky="EW")
 
 
