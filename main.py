@@ -79,6 +79,10 @@ def find_password():
             messagebox.showinfo(title=website, message=f"Email: {email}\nPassword: {password}")
         else:
             messagebox.showerror(title="Error", message=f"No details exist for {website}!")
+#TODO - function to display generated data
+def display_stored_data():
+    
+    pass
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -96,6 +100,8 @@ tab2 = ttk.Frame(notebook)
 notebook.add(tab1, text="Manager")
 notebook.add(tab2, text="Vault")
 
+# Tab 1 UI
+# Create a password for a new website or search for an existing password
 canvas = Canvas(tab1, width=320, height=200, highlightthickness=0)
 logo = PhotoImage(file="logo_resized.png")
 canvas.create_image(160, 100, image=logo)
@@ -111,7 +117,7 @@ user_label = Label(tab1, text="Email/Username:", font=("Stencil Std", 12, "norma
 user_label.grid(column=0, row=2, sticky="W")
 user_entry = Entry(tab1, width=35)
 user_entry.grid(column=1, row=2, columnspan=2, sticky="EW")
-user_entry.insert(0, "edib.hafizovic@gmail.com") # use END to insert text at the end of an existing string value
+user_entry.insert(0, "test@mail.com") # use END to insert text at the end of an existing string value
 
 pw_label = Label(tab1, text="Password:", font=("Stencil Std", 12, "normal"))
 pw_label.grid(column=0, row=3, sticky="W")
@@ -127,5 +133,12 @@ add_btn.grid(column=1,row=4, columnspan=2, sticky="EW")
 search_btn = Button(tab1, text="Search", command=find_password)
 search_btn.grid(column=2, row=1, sticky="EW")
 
+# Tab 2 UI
+# Display stored data
+
+stored_data_text = Text(tab2, width=60, height=20)
+stored_data_text.grid(column=0, row=0)
+display_btn = Button(tab2, text="Refresh Data", command=display_stored_data)
+display_btn.grid(column=0, row=1)
 
 window.mainloop()
