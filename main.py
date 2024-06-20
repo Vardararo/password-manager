@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 import random
 import pyperclip
 import json
@@ -85,6 +85,16 @@ def find_password():
 window = Tk()
 window.title("Password Manager")
 window.config(padx=50, pady=50)
+
+# Create Notebook
+notebook = ttk.Notebook(window)
+notebook.grid(column=0, row=0, sticky='NSEW')
+
+# Create Frames for tabs
+tab1 = ttk.Frame(notebook)
+tab2 = ttk.Frame(notebook)
+notebook.add(tab1, text="Password Manager")
+notebook.add(tab2, text="Stored Data")
 
 canvas = Canvas(width=320, height=200, highlightthickness=0)
 logo = PhotoImage(file="logo_resized.png")
