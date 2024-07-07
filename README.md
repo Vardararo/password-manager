@@ -32,8 +32,8 @@ The `display_stored_data` function reads all stored credentials from the JSON fi
 
 ## Screenshots
 
-    ![Image Alt text](images/Password%20Manager.png "Password App")
-    ![Image Alt text](images/Vault.png "Saved Data")
+    ![Image Alt text](/images/Password%20Manager.png "Password App")
+    ![Image Alt text](/images/Vault.png "Saved Data")
 
 
 ## File Structure
