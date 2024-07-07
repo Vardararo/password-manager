@@ -1,6 +1,6 @@
 # Password Manager
 
-A simple and secure password manager built using Python and Tkinter. This application helps you generate strong passwords and store them securely.
+A simple and secure password manager built using Python and Tkinter. This application helps you generate strong passwords and store them securely. The application uses `customtkinter` for an enhanced UI experience.
 
 ## Features
 
@@ -9,6 +9,7 @@ A simple and secure password manager built using Python and Tkinter. This applic
 -   **Find Password**: Enter the website and click "Search" to find the stored password.
 -   **Display All Stored Data**: Go to the "Vault" tab and click "Refresh Data" to display all stored credentials.
 -   **Clipboard Copy**: Automatically copy generated passwords to the clipboard.
+-   **Dark mode**: Uses dark mode with a custom color theme
 
 ## Code Overview
 
@@ -46,6 +47,9 @@ The `display_stored_data` function reads all stored credentials from the JSON fi
 -   `tkinter`: Standard Python interface to the Tk GUI toolkit.
 -   `pyperclip`: A cross-platform Python module for clipboard operations.
 -   `json`: Built-in Python module for JSON file operations.
+-   `customtkinter`: Enhanced UI elements
+-   `tkinterDnD`: Drag and drop support
+-   `PIL (Pillow)`: For image handling
 
 ## License
 
