@@ -32,8 +32,8 @@ The `display_stored_data` function reads all stored credentials from the JSON fi
 
 ## Screenshots
 
-    ![Image Alt text](/images/Password%20Manager.png "Password App")
-    ![Image Alt text](/images/Vault.png "Saved Data")
+![Password Manager](https://github.com/Vardararo/password-manager/assets/135714789/2f3cc2c0-c928-4f9f-b054-79ca36c5fe44)
+![Vault](https://github.com/Vardararo/password-manager/assets/135714789/60c09811-83e2-4926-af84-d6538b1d81cd)
 
 
 ## File Structure
