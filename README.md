@@ -31,6 +31,10 @@ The `display_stored_data` function reads all stored credentials from the JSON fi
 
 ## Screenshots
 
+    ![Image Alt text](images\Password Manager.png "Password App")
+    ![Image Alt text](images\Password Manager.png "Saved Data")
+
+
 ## File Structure
 
 -   `password_manager.py`: The main application script.
