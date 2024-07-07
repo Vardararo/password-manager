@@ -3,6 +3,10 @@ from tkinter import messagebox, ttk
 import random
 import pyperclip
 import json
+import customtkinter as ctk
+import tkinterDnD
+from PIL import Image
+
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
@@ -94,61 +98,64 @@ def display_stored_data():
         stored_data_text.delete(1.0, END)
         stored_data_text.insert(END, "No stored data found.")
 
-# ---------------------------- UI SETUP ------------------------------- #
 
-window = Tk()
+ctk.set_ctk_parent_class(tkinterDnD.Tk)
+
+ctk.set_appearance_mode("dark")  # Modes: "System" (standard), "Dark", "Light"
+ctk.set_default_color_theme("green")  # Themes: "blue" (standard), "green", "dark-blue"
+
+window = ctk.CTk()
+window.minsize(580, 500)
 window.title("Password Manager")
-window.config(padx=50, pady=50)
 
-# Create Notebook
-notebook = ttk.Notebook(window)
-notebook.grid(column=0, row=0, sticky='NSEW')
+window.grid_rowconfigure((0 , 1, 2, 3, 4), weight=1)
+window.grid_columnconfigure((0, 1, 2), weight=1)
 
-# Create Frames for tabs
-tab1 = ttk.Frame(notebook)
-tab2 = ttk.Frame(notebook)
-notebook.add(tab1, text="Manager")
-notebook.add(tab2, text="Vault")
+print(type(window), isinstance(window, tkinterDnD.Tk))
 
-# Tab 1 UI
-# Create a password for a new website or search for an existing password
-canvas = Canvas(tab1, width=320, height=200, highlightthickness=0)
-logo = PhotoImage(file="logo_resized.png")
-canvas.create_image(160, 100, image=logo)
-canvas.grid(column=0, row=0, columnspan=3)
+tabview = ctk.CTkTabview(master=window)
+tabview.pack(padx=60, pady=20, fill="both", expand=True)
 
-website_label = Label(tab1, text="Website:", font=("Stencil Std", 12, "normal"))
-website_label.grid(column=0, row=1, sticky="W")
-website_entry = Entry(tab1, width=35)
+tab_1 = tabview.add("Manager")
+tab_2 = tabview.add("Vault")
+
+logo = ctk.CTkImage(dark_image=Image.open("logo_resized.png"),
+                                  size=(350, 300))
+image_label = ctk.CTkLabel(tab_1, image=logo, text="")
+image_label.grid(column=0, row=0, columnspan=3)
+
+website_label = ctk.CTkLabel(tab_1, text="Website:", font=("Stencil Std", 12, "normal"))
+website_label.grid(column=0, row=1, sticky="W", padx=5, pady=5)
+website_entry = ctk.CTkEntry(master=tab_1, width=250)
 website_entry.grid(column=1, row=1, sticky="EW")
 website_entry.focus()
 
-user_label = Label(tab1, text="Email/Username:", font=("Stencil Std", 12, "normal"))
-user_label.grid(column=0, row=2, sticky="W")
-user_entry = Entry(tab1, width=35)
+user_label = ctk.CTkLabel(tab_1, text="Email/Username:", font=("Stencil Std", 12, "normal"))
+user_label.grid(column=0, row=2, sticky="W", padx=5, pady=5)
+user_entry = ctk.CTkEntry(tab_1, width=35, placeholder_text="test@mail.com")
 user_entry.grid(column=1, row=2, columnspan=2, sticky="EW")
-user_entry.insert(0, "test@mail.com") # use END to insert text at the end of an existing string value
+#user_entry.insert(0, "test@mail.com") # use this instead of placeholder_text if the email is always the same
 
-pw_label = Label(tab1, text="Password:", font=("Stencil Std", 12, "normal"))
-pw_label.grid(column=0, row=3, sticky="W")
-pw_entry = Entry(tab1, width=17)
+pw_label = ctk.CTkLabel(tab_1, text="Password:", font=("Stencil Std", 12, "normal"))
+pw_label.grid(column=0, row=3, sticky="W", padx=5, pady=5)
+pw_entry = ctk.CTkEntry(tab_1, width=17)
 pw_entry.grid(column=1, row=3, sticky="EW")
 
-generate_pw = Button(tab1, text="Generate Password", command=generate_password)
+generate_pw = ctk.CTkButton(tab_1, text="Generate Password", command=generate_password)
 generate_pw.grid(column=2, row=3, sticky="EW")
 
-add_btn = Button(tab1, text="Add", command=save)
-add_btn.grid(column=1,row=4, columnspan=2, sticky="EW")
+add_btn = ctk.CTkButton(tab_1, text="Add", command=save)
+add_btn.grid(column=1,row=4, columnspan=2, sticky="EW", pady=5)
 
-search_btn = Button(tab1, text="Search", command=find_password)
+search_btn = ctk.CTkButton(tab_1, text="Search", command=find_password)
 search_btn.grid(column=2, row=1, sticky="EW")
 
 
 # Tab 2 UI
 # Display stored data
-stored_data_text = Text(tab2, width=60, height=20)
+stored_data_text = ctk.CTkTextbox(tab_2, width=490, height=422, font=("Stencil Std", 16, "normal"))
 stored_data_text.grid(column=0, row=0)
-display_btn = Button(tab2, text="Refresh Data", command=display_stored_data)
+display_btn = ctk.CTkButton(tab_2, text="Refresh Data", command=display_stored_data)
 display_btn.grid(column=0, row=1)
 
 window.mainloop()
