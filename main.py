@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import messagebox, ttk
+# from tkinter import messagebox, ttk
 import random
 import pyperclip
 import json
@@ -50,7 +50,7 @@ def save():
     # Check if the correct credentials are entered
     if len(website) == 0 or len(password) == 0:
         #messagebox.showerror(title="Error", message="Please don't leave empty fields!") - tkinter messagebox
-        CTkMessagebox(title="Error", message="Please don't leave empty fields!", icon="warning") # CTk messagebox
+        CTkMessagebox(title="Warning", message="Please don't leave empty fields!", icon="warning") # CTk messagebox
     
     # Review inserted data before saving to a file
     else:
@@ -87,14 +87,16 @@ def find_password():
         with open("data.json") as file:
             data = json.load(file)
     except FileNotFoundError:
-        messagebox.showerror(title="Error", message="No data file found!")
+        CTkMessagebox(title="Error", message="No data file found!", icon="cancel")
+    
     else:
         if website in data:
             email = data[website]['email']
             password = data[website]['password']
-            messagebox.showinfo(title=website, message=f"Email: {email}\nPassword: {password}")
+            CTkMessagebox(title=website, message=f"Email: {email}\nPassword: {password}", icon="info")
+            pyperclip.copy(password) # Automatically copies the password of searched website
         else:
-            messagebox.showerror(title="Error", message=f"No details exist for {website}!")
+            CTkMessagebox(title="Error", message=f"No details exist for {website}!", icon="cancel")
 
 # Display all the passwords saved to the data.json file
 def display_stored_data():
@@ -109,6 +111,7 @@ def display_stored_data():
         stored_data_text.insert(END, "No stored data found.")
 
 
+# CTk UI setup
 ctk.set_appearance_mode("dark")  # Modes: "System" (standard), "Dark", "Light"
 ctk.set_default_color_theme("green")  # Themes: "blue" (standard), "green", "dark-blue"
 
@@ -119,13 +122,15 @@ window.title("Password Manager")
 window.grid_rowconfigure((0 , 1, 2, 3, 4), weight=1)
 window.grid_columnconfigure((0, 1, 2), weight=1)
 
-
+# Create the separate tabs for managing and storing data
 tabview = ctk.CTkTabview(master=window)
 tabview.pack(padx=60, pady=20, fill="both", expand=True)
 
 tab_1 = tabview.add("Manager")
 tab_2 = tabview.add("Vault")
 
+# Tab 1 UI
+# Insert new data and search for stored passwords
 logo = ctk.CTkImage(dark_image=Image.open("logo_resized.png"),
                                   size=(350, 300))
 image_label = ctk.CTkLabel(tab_1, image=logo, text="")
@@ -156,7 +161,6 @@ add_btn.grid(column=1,row=4, columnspan=2, sticky="EW", pady=5)
 
 search_btn = ctk.CTkButton(tab_1, text="Search", command=find_password)
 search_btn.grid(column=2, row=1, sticky="EW")
-
 
 # Tab 2 UI
 # Display stored data
