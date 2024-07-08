@@ -4,7 +4,7 @@ import random
 import pyperclip
 import json
 import customtkinter as ctk
-import tkinterDnD
+from CTkMessagebox import CTkMessagebox
 from PIL import Image
 
 
@@ -49,7 +49,8 @@ def save():
     
     # Check if the correct credentials are entered
     if len(website) == 0 or len(password) == 0:
-        messagebox.showerror(title="Error", message="Please don't leave empty fields!")
+        #messagebox.showerror(title="Error", message="Please don't leave empty fields!") - tkinter messagebox
+        CTkMessagebox(title="Error", message="Please don't leave empty fields!", icon="warning") # CTk messagebox
     # Review inserted data before saving to a file
     else:
         is_ok = messagebox.askokcancel(title=website, message=f"These are the details entered: \nEmail: {email} "
@@ -99,8 +100,6 @@ def display_stored_data():
         stored_data_text.insert(END, "No stored data found.")
 
 
-ctk.set_ctk_parent_class(tkinterDnD.Tk)
-
 ctk.set_appearance_mode("dark")  # Modes: "System" (standard), "Dark", "Light"
 ctk.set_default_color_theme("green")  # Themes: "blue" (standard), "green", "dark-blue"
 
@@ -111,7 +110,6 @@ window.title("Password Manager")
 window.grid_rowconfigure((0 , 1, 2, 3, 4), weight=1)
 window.grid_columnconfigure((0, 1, 2), weight=1)
 
-print(type(window), isinstance(window, tkinterDnD.Tk))
 
 tabview = ctk.CTkTabview(master=window)
 tabview.pack(padx=60, pady=20, fill="both", expand=True)
@@ -132,7 +130,7 @@ website_entry.focus()
 
 user_label = ctk.CTkLabel(tab_1, text="Email/Username:", font=("Stencil Std", 12, "normal"))
 user_label.grid(column=0, row=2, sticky="W", padx=5, pady=5)
-user_entry = ctk.CTkEntry(tab_1, width=35, placeholder_text="test@mail.com")
+user_entry = ctk.CTkEntry(tab_1, width=35, placeholder_text="your@mail.com")
 user_entry.grid(column=1, row=2, columnspan=2, sticky="EW")
 #user_entry.insert(0, "test@mail.com") # use this instead of placeholder_text if the email is always the same
 
