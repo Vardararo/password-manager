@@ -51,11 +51,16 @@ def save():
     if len(website) == 0 or len(password) == 0:
         #messagebox.showerror(title="Error", message="Please don't leave empty fields!") - tkinter messagebox
         CTkMessagebox(title="Error", message="Please don't leave empty fields!", icon="warning") # CTk messagebox
+    
     # Review inserted data before saving to a file
     else:
-        is_ok = messagebox.askokcancel(title=website, message=f"These are the details entered: \nEmail: {email} "
-                                                      f"\nPassword: {password} \nIs it ok to save?")  
-        if is_ok:
+        details = CTkMessagebox(title=website, message=f"These are the details entered: \nEmail: {email} "
+                                                      f"\nPassword: {password} \nIs it ok to save?", icon="question", 
+                                                      option_1="Cancel", option_2="Yes")
+        response = details.get()
+        
+        # Save input data to the vault (json file)
+        if response == "Yes":
             try:
                 with open("data.json", "r") as file:
                     data = json.load(file) # Read data from json
@@ -70,6 +75,10 @@ def save():
             finally:    
                 website_entry.delete(0, END)
                 pw_entry.delete(0, END)
+        
+        # Cancel if the data is incorrect
+        else:
+            details.destroy()
 
 # Find a password for given website
 def find_password():
