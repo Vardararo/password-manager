@@ -4,6 +4,8 @@ from tkinter import END
 from string import ascii_letters, punctuation
 import random
 import json
+import sqlite3
+from hashlib import sha512
 import pyperclip
 import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox
@@ -108,6 +110,20 @@ def find_password():
         else:
             CTkMessagebox(title="Error", message=f"No details exist for {
                           website}!", icon="cancel")
+
+# ---------------------------- CREATE DATABASE ------------------------------- #
+
+
+data_vault = """
+CREATE TABLE passwords (
+    website TEXT,
+    email TEXT,
+    hpassword TEXT
+    )"""
+
+add_to_vault = "INSERT INTO passwords VALUES ('{}','{}','{}')"
+
+connection = sqlite3.connect("./passwords.db")
 
 
 def display_stored_data():
