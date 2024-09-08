@@ -1,7 +1,7 @@
 '''Password Manager Application'''
 
 from tkinter import END
-from string import ascii_letters, punctuation
+from string import ascii_letters, punctuation, digits
 import random
 import json
 import sqlite3
@@ -19,7 +19,7 @@ def generate_password():
     pw_entry.delete(0, END)
 
     letters = list(ascii_letters)
-    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    numbers = list(digits)
     symbols = list(punctuation)
 
     nr_letters = random.randint(6, 8)
@@ -124,6 +124,8 @@ CREATE TABLE passwords (
 add_to_vault = "INSERT INTO passwords VALUES ('{}','{}','{}')"
 
 connection = sqlite3.connect("./passwords.db")
+
+# ---------------------------- SHOW STORED DATA ------------------------------- #
 
 
 def display_stored_data():
