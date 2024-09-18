@@ -101,25 +101,29 @@ def find_password():
         if website in data:
             email = data[website]['email']
             password = data[website]['password']
-            CTkMessagebox(title=website, message=f"Email: {
-                          email}\nPassword: {password}", icon="info")
+            msg = CTkMessagebox(title=website, message=f"Email: {
+                          email}\nPassword: {password}", icon="info",
+                          option_1="OK", option_2="Delete")
+
             # Automatically copies the password of searched website
             pyperclip.copy(password)
+
+            #Remove selected entry
+            if msg.get() == "Delete":
+                del data[website]
+                with open("data.json", "w", encoding="utf-8") as file:
+                    json.dump(data, file, indent=4)
+                CTkMessagebox(title="Success",
+                                message=f"Data for {website} has been deleted.", icon="check")
+            else:
+                CTkMessagebox(title="Error", message=f"No details exist for {
+                        website}!", icon="cancel")
         else:
-            CTkMessagebox(title="Error", message=f"No details exist for {
+            if len(website) == 0:
+                CTkMessagebox(title="Error", message="No data has been entered!", icon="cancel")
+            else:
+                CTkMessagebox(title="Error", message=f"No details exist for {
                           website}!", icon="cancel")
-
-# ---------------------------- DELETE DATA ------------------------------- #
-
-
-def delete_data():
-    '''Delete all data for the selected website'''
-    website = website_entry.get()
-    if not website:
-        CTkMessagebox(title="Warning", message="Please enter the website name!",
-                      icon="warning")
-
-
 
 # ---------------------------- SHOW STORED DATA ------------------------------- #
 
