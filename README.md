@@ -7,6 +7,7 @@ A simple and secure password manager built using Python and Tkinter. This applic
 -   **Password Generation**: Generate strong, random passwords with a mix of letters, numbers, and symbols.
 -   **Save Passwords**: Save website credentials (website, email/username, password) to a JSON file.
 -   **Find Password**: Enter the website and click "Search" to find the stored password.
+-   **Delete Password**: Delete website credentials from the JSON file.
 -   **Display All Stored Data**: Go to the "Vault" tab and click "Refresh Data" to display all stored credentials.
 -   **Clipboard Copy**: Automatically copy generated passwords to the clipboard.
 -   **Dark mode**: Uses dark mode with a custom color theme
@@ -24,6 +25,10 @@ The `save` function saves the entered website, email/username, and password to a
 ### Find Password
 
 The `find_password` function retrieves the stored password for a given website from the JSON file and displays it in a message box.
+
+### Delete Login Details
+
+Remove given websites information from the JSON file.
 
 ### Display Stored Data
 
