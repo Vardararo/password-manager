@@ -115,15 +115,12 @@ def find_password():
                     json.dump(data, file, indent=4)
                 CTkMessagebox(title="Success",
                                 message=f"Data for {website} has been deleted.", icon="check")
-            else:
-                CTkMessagebox(title="Error", message=f"No details exist for {
-                        website}!", icon="cancel")
+
+        elif len(website) == 0:
+            CTkMessagebox(title="Error", message="No data has been entered!", icon="cancel")
         else:
-            if len(website) == 0:
-                CTkMessagebox(title="Error", message="No data has been entered!", icon="cancel")
-            else:
-                CTkMessagebox(title="Error", message=f"No details exist for {
-                          website}!", icon="cancel")
+            CTkMessagebox(title="Error", message=f"No details exist for {
+                    website}!", icon="cancel")
 
 # ---------------------------- SHOW STORED DATA ------------------------------- #
 
