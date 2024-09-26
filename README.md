@@ -61,7 +61,7 @@ The `display_stored_data` function reads all stored credentials from the JSON fi
 -   `customtkinter`: Enhanced UI elements
 -   `tkinterDnD`: Drag and drop support
 -   `PIL (Pillow)`: For image handling
--    cryptography : for password encryption
+-   `cryptography` : for password encryption
 
 ## License
 
