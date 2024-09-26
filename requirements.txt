@@ -3,3 +3,4 @@ CTkMessagebox==2.7
 customtkinter==5.2.2
 Pillow==10.4.0
 pyperclip==1.8.2
+cryptography==43.0.1

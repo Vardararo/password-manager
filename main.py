@@ -4,16 +4,35 @@ from tkinter import END
 from string import ascii_letters, punctuation, digits
 import random
 import json
+import os
+from cryptography.fernet import Fernet
 import pyperclip
 import customtkinter as ctk
 from CTkMessagebox import CTkMessagebox
 from PIL import Image
 
 
+def load_key():
+    '''Load an existing key or generate a new key if one does not exist'''
+
+    if os.path.exists('filekey.key'):
+        with open('filekey.key', 'rb') as filekey:
+            key = filekey.read()
+    else:
+        key = Fernet.generate_key()
+        with open('filekey.key', 'wb') as filekey:
+            filekey.write(key)
+    return key
+
+KEY = load_key()
+fernet = Fernet(KEY)
+
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+
 
 def generate_password():
     '''Generate a random password using a combination of letters, numbers and symbols'''
+
     pw_entry.delete(0, END)
 
     letters = list(ascii_letters)
@@ -37,18 +56,21 @@ def generate_password():
     # Use pyperclip to automatically copy the new pasword to the clipboard for ease of access
     pyperclip.copy(passw)
 
-# ---------------------------- SAVE PASSWORD ------------------------------- #
+# ---------------------------- SAVE AND FIND PASSWORD ------------------------------- #
 
 
 def save():
     '''Save entered data to a JSON file'''
+
     website = website_entry.get()
     email = user_entry.get()
     password = pw_entry.get()
+    encrypted_pw = fernet.encrypt(password.encode()).decode()
+
     new_data = {
         website: {
             "email": email,
-            "password": password,
+            "password": encrypted_pw,
         }}
 
     # Check if the correct credentials are entered
@@ -71,16 +93,15 @@ def save():
                 with open("data.json", "r", encoding="utf-8") as file:
                     data = json.load(file)  # Read data from json
                     data.update(new_data)  # Update data from json
-                with open("data.json", "w", encoding="utf-8") as file:
-                    json.dump(data, file, indent=4)  # Save updated data
 
             except FileNotFoundError:
-                with open("data.json", "w", encoding="utf-8") as file:
-                    json.dump(new_data, file, indent=4)
+                data = new_data
 
-            finally:
-                website_entry.delete(0, END)
-                pw_entry.delete(0, END)
+            with open("data.json", "w", encoding="utf-8") as file:
+                json.dump(data, file, indent=4)  # Save updated data
+
+            website_entry.delete(0, END)
+            pw_entry.delete(0, END)
 
         # Cancel if the data is incorrect
         else:
@@ -89,26 +110,30 @@ def save():
 
 def find_password():
     '''Find a password for a queried website'''
+
     website = website_entry.get()
     try:
-        with open("data.json", encoding="utf-8") as file:
+        with open("data.json", 'r', encoding="utf-8") as file:
             data = json.load(file)
     except FileNotFoundError:
         CTkMessagebox(
             title="Error", message="No data file found!", icon="cancel")
-
     else:
         if website in data:
             email = data[website]['email']
-            password = data[website]['password']
+            encrypted_pw = data[website]['password']
+
+            # Decrypt the password before displaying data
+            decrypted_pw = fernet.decrypt(encrypted_pw.encode()).decode()
+
             msg = CTkMessagebox(title=website, message=f"Email: {
-                          email}\nPassword: {password}", icon="info",
+                          email}\nPassword: {decrypted_pw}", icon="info",
                           option_1="OK", option_2="Delete")
 
             # Automatically copies the password of searched website
-            pyperclip.copy(password)
+            pyperclip.copy(decrypted_pw)
 
-            #Remove selected entry
+            # Remove selected entry
             if msg.get() == "Delete":
                 del data[website]
                 with open("data.json", "w", encoding="utf-8") as file:
@@ -116,6 +141,7 @@ def find_password():
                 CTkMessagebox(title="Success",
                                 message=f"Data for {website} has been deleted.", icon="check")
 
+        # Check for appropriate data
         elif len(website) == 0:
             CTkMessagebox(title="Error", message="No data has been entered!", icon="cancel")
         else:
@@ -127,19 +153,23 @@ def find_password():
 
 def display_stored_data():
     '''Display all the passwords saved to the data.json file'''
+
     try:
         with open("data.json", "r", encoding="utf-8") as file:
             data = json.load(file)
             stored_data_text.delete(1.0, END)
             for website, details in data.items():
+                details['decrypted_pw'] = fernet.decrypt(details['password'].encode()).decode()
+
                 stored_data_text.insert(END, f"Website: {website}\nEmail: {
-                                        details['email']}\nPassword: {details['password']}\n\n")
+                                        details['email']}\nPassword: {details['decrypted_pw']}\n\n")
     except FileNotFoundError:
         stored_data_text.delete(1.0, END)
         stored_data_text.insert(END, "No stored data found.")
 
+# ---------------------------- # CTk UI SETUP ------------------------------- #
 
-# CTk UI setup
+
 ctk.set_appearance_mode("dark")  # Modes: "System" (standard), "Dark", "Light"
 # Themes: "blue" (standard), "green", "dark-blue"
 ctk.set_default_color_theme("green")
@@ -151,14 +181,15 @@ window.title("Password Manager")
 window.grid_rowconfigure((0, 1, 2, 3, 4), weight=1)
 window.grid_columnconfigure((0, 1, 2), weight=1)
 
-# Create the separate tabs for managing and storing data
+# Create separate tabs for managing and storing data
 tabview = ctk.CTkTabview(master=window)
 tabview.pack(padx=60, pady=20, fill="both", expand=True)
 
 tab_1 = tabview.add("Manager")
 tab_2 = tabview.add("Vault")
 
-# Tab 1 UI
+### Tab 1 UI
+
 # Insert new data and search for stored passwords
 logo = ctk.CTkImage(dark_image=Image.open("logo_resized.png"),
                     size=(350, 300))
@@ -195,7 +226,8 @@ add_btn.grid(column=1, row=4, columnspan=2, sticky="EW", pady=5)
 search_btn = ctk.CTkButton(tab_1, text="Search", command=find_password)
 search_btn.grid(column=2, row=1, sticky="EW")
 
-# Tab 2 UI
+### Tab 2 UI
+
 # Display stored data
 stored_data_text = ctk.CTkTextbox(
     tab_2, width=490, height=422, font=("Stencil Std", 16, "normal"))
