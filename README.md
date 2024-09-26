@@ -22,8 +22,6 @@ The `generate_password` function creates a random password with a specified numb
 ### Encrypt Password
 All passwords are encrypted using Fernet to assure that the data cannot be read or manipulated without a key.
 
-The `find_password` function retrieves the stored password for a given website from the JSON file and displays it in a message box.
-
 ### Save Password
 
 The `save` function saves the entered website, email/username, and password to a JSON file (`data.json`). It checks for empty fields and confirms the details before saving.
@@ -61,7 +59,7 @@ The `display_stored_data` function reads all stored credentials from the JSON fi
 -   `customtkinter`: Enhanced UI elements
 -   `tkinterDnD`: Drag and drop support
 -   `PIL (Pillow)`: For image handling
--   `cryptography` : for password encryption
+-   `cryptography`: for password encryption
 
 ## License
 
