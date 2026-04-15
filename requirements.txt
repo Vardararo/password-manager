@@ -1,6 +1,6 @@
 CTkMessagebox==2.7
 CTkMessagebox==2.7
 customtkinter==5.2.2
-Pillow==12.1.1
+Pillow==12.2.0
 pyperclip==1.8.2
 cryptography==46.0.5
